@@ -12,14 +12,19 @@ const Settings = () => {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    onAuthStateChanged(auth);
+    onAuthStateChanged(auth, (user) => {
+      setName(user?.displayName ?? "");
+      setEmail(user?.email ?? "");
+    });
   });
 
   return (
     <View style={{ alignItems: "center", marginTop: 50 }}>
-      <Avatar.Text label="UN" />
-      <Title>User Name</Title>
-      <Subheading>user@name.com</Subheading>
+      <Avatar.Text
+        label={name.split(" ").reduce((prev, current) => prev + current[0], "")}
+      />
+      <Title>{name}</Title>
+      <Subheading>{email}</Subheading>
       <Button onPress={() => signOut(auth)}>Sign Out</Button>
     </View>
   );
